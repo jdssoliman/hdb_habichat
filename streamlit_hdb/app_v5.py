@@ -229,12 +229,15 @@ if st.session_state.get("awaiting_payslip", False):
                     if result["decision"] == "ACCEPT":
                         with st.chat_message("assistant"):
                             st.success(
-                                "✅ **ACCEPT** (salary matches declared income within ±10%).\n\n"
-                                f"• Declared income: **S${result['declared_income']:,.0f}**\n"
-                                f"• Payslip income: **S${result['payslip_income']:,.0f}**\n\n"
-                                "This is a basic salary-match check only. For official assessment, use the **HDB Flat Portal**.",
+                                (
+                                    "✅ **ACCEPT** (salary matches declared income within ±10%).\n\n"
+                                    "- Declared income: **S${:,.0f}**\n"
+                                    "- Payslip income: **S${:,.0f}**\n\n"
+                                    "This is a basic salary-match check only. For official assessment, use the **HDB Flat Portal**."
+                                ).format(result["declared_income"], result["payslip_income"]),
                                 icon="✅",
                             )
+
                         st.session_state.messages.append({"role": "assistant", "content": "ACCEPT summary shown"})
                     else:
                         # Escape reasons to avoid Markdown italics / merging
