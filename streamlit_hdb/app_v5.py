@@ -12,6 +12,29 @@ from hdb_backend import (
 )
 
 
+# ---- Minimal render helpers
+def log(role: str, content):
+    if not isinstance(content, str):
+        try:
+            content = json.dumps(content, ensure_ascii=False)
+        except Exception:
+            content = str(content)
+    st.session_state.messages.append({"role": role, "content": content})
+
+def say(content: str):
+    with st.chat_message("assistant"):
+        st.markdown(content)
+    st.session_state.messages.append({"role": "assistant", "content": content})
+
+def md_escape(s: str) -> str:
+    # escape a few common Markdown troublemakers
+    return (
+        s.replace("\\", "\\\\")
+         .replace("_", r"\_")
+         .replace("*", r"\*")
+         .replace("`", r"\`")
+    )
+
 st.set_page_config(page_title="🏠 HDB HabiChat", page_icon="🏠", layout="centered")
 st.title("🏠 HDB HabiChat")
 
@@ -214,7 +237,10 @@ if st.session_state.get("awaiting_payslip", False):
                             )
                         st.session_state.messages.append({"role": "assistant", "content": "ACCEPT summary shown"})
                     else:
-                        reasons_md = "\n".join([f"- {r}" for r in result.get("reasons", [])]) or "- Not specified"
+                        # Escape reasons to avoid Markdown italics / merging
+                        reasons = [md_escape(r) for r in result.get("reasons", [])]
+                        reasons_md = "\n".join([f"- {r}" for r in reasons]) or "- Not specified"
+                    
                         with st.chat_message("assistant"):
                             st.error(
                                 "❌ **REJECT** (based on salary-match rules).\n\n"
@@ -223,6 +249,7 @@ if st.session_state.get("awaiting_payslip", False):
                                 icon="❌",
                             )
                         st.session_state.messages.append({"role": "assistant", "content": "REJECT summary shown"})
+
 
                     # Build a compact profile for the explainer
                     profile = {
