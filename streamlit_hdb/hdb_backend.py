@@ -291,7 +291,7 @@ def salary_only_decision(row: pd.Series, payslip_income: Optional[float]) -> dic
     diff_ratio = abs(payslip_income - declared) / declared
     if diff_ratio > 0.10:
         reasons.append(
-            f"Payslip income (S${payslip_income:,.0f}) does not match declared income (S${declared:,.0f}) beyond 10%."
+            f"Payslip income (S{payslip_income:,.0f}) does not match declared income (S{declared:,.0f}) beyond 10%."
         )
         return {"decision": "REJECT", "reasons": reasons, "declared_income": declared, "payslip_income": payslip_income}
 
@@ -332,7 +332,7 @@ def llm_explain_hosted_json(decision: str, reasons: List[str], profile: Dict) ->
     }
     ex_reject_user = (
         "Decision: REJECT\n"
-        "Reasons: Payslip income (S$9,500) does not match declared income (S$7,000) beyond 10%.\n"
+        "Reasons: Payslip income (S9,500) does not match declared income (S7,000) beyond 10%.\n"
         "Profile: {\"Name\":\"Peter Lim\",\"Citizenship\":\"Singapore Citizen\",\"Marital Status\":\"Married\",\"Declared Income\":7000,\"Payslip Income\":9500,\"Household Type\":\"Family\"}\n"
         "Write the JSON."
     )
