@@ -226,7 +226,7 @@ def parse_payslip(uploaded_file) -> Optional[float]:
 # -------------------------
 @st.cache_data
 def load_db() -> pd.DataFrame:
-    df = pd.read_csv("data/mock_db.csv")  # ensure .csv
+    df = pd.read_csv("../data/mock_db.csv")  # ensure .csv
     return df
 
 # -------------------------
