@@ -36,7 +36,7 @@ def md_escape(s: str) -> str:
     )
 
 st.set_page_config(page_title="🏠 HDB HabiChat", page_icon="🏠", layout="centered")
-st.title("🏠 HDB HabiChat")
+st.title("🏠 Smart Loan Advisor")
 
 # Key rotation state
 init_key_index()
