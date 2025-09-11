@@ -80,11 +80,14 @@ def say(content: str):
 
 # ---- Greeting ----
 if not st.session_state.messages:
-    log("assistant",
-        "Hello! I’m your HDB assistant. Ask any **general HDB loan questions** and/or enter your **IC** "
-        "(e.g., S1234567A) to look up a demo record. "
-        "You can then upload a payslip (PDF/PNG/JPG) to extract your **monthly basic salary** and get a quick **accept/reject** "
-        "based solely on salary match vs your declared income.")
+    log(
+        "assistant",
+        "Welcome, Officer. I’m here to help with loan validation.\n\n"
+        "Start by entering an **applicant’s IC (e.g., S1234567A)** to pull their record. "
+        "Once retrieved, you can upload a **payslip (PDF/PNG/JPG)**, and I’ll process it to "
+        "confirm income accuracy against the loan application details, giving you a quick "
+        "**approve/reject suggestion.**"
+    )
 
 # ---- Render history
 for m in st.session_state.messages:
@@ -150,8 +153,8 @@ if user_text:
                 f"**Marital Status:** {row['Marital Status']}  \n"
                 f"**Date of Birth:** {row['Date of Birth']}  \n"
                 f"**Declared Income:** S${float(row['Declared Income']):,.0f}  \n\n"
-                "Please upload your **latest payslip (PDF/PNG/JPG)** and I’ll extract your **monthly basic salary** "
-                "and provide a quick **salary-match decision** (accept/reject)."
+                "Please upload the **latest payslip (PDF/PNG/JPG)** and I’ll extract the **monthly basic salary** "
+                "and provide a quick **salary-match decision (accept/reject)**."
             )
             say(profile_md)
             st.session_state.awaiting_payslip = True
